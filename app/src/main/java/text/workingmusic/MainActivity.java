@@ -3,6 +3,7 @@ package text.workingmusic;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.SeekBar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity
         final View button1 = findViewById(R.id.button);
         final View button2 = findViewById(R.id.button2);
 
+        /*
+            关闭按键
+         */
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -72,6 +77,10 @@ public class MainActivity extends AppCompatActivity
                 setHideAnimation(view,450);
             }
         });
+
+        /*
+            开始按键
+         */
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -84,6 +93,107 @@ public class MainActivity extends AppCompatActivity
                 setShowAnimation(view,450);
             }
         });
+
+        /*
+            seekbar监听设置
+         */
+        SeekBar seekBar1 =(SeekBar)findViewById(R.id.seekBar1);
+        SeekBar seekBar2 =(SeekBar)findViewById(R.id.seekBar2);
+        SeekBar seekBar3 =(SeekBar)findViewById(R.id.seekBar3);
+        SeekBar seekBar4 =(SeekBar)findViewById(R.id.seekBar4);
+        seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * 拖动条停止拖动的时候调用
+             */
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar1) {
+            }
+            /**
+             * 拖动条开始拖动的时候调用
+             */
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar1) {
+            }
+            /**
+             * 拖动条进度改变的时候调用
+             */
+            @Override
+            public void onProgressChanged(SeekBar seekBar1, int progress,
+                                          boolean fromUser) {
+                Snackbar.make(seekBar1, "Replace with your own action" + progress, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
+        seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * 拖动条停止拖动的时候调用
+             */
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar2) {
+            }
+            /**
+             * 拖动条开始拖动的时候调用
+             */
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar2) {
+            }
+            /**
+             * 拖动条进度改变的时候调用
+             */
+            @Override
+            public void onProgressChanged(SeekBar seekBar2, int progress,
+                                          boolean fromUser) {
+
+            }
+        });
+        seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * 拖动条停止拖动的时候调用
+             */
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar3) {
+            }
+            /**
+             * 拖动条开始拖动的时候调用
+             */
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar3) {
+            }
+            /**
+             * 拖动条进度改变的时候调用
+             */
+            @Override
+            public void onProgressChanged(SeekBar seekBar3, int progress,
+                                          boolean fromUser) {
+
+            }
+        });
+        seekBar4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * 拖动条停止拖动的时候调用
+             */
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar4) {
+            }
+            /**
+             * 拖动条开始拖动的时候调用
+             */
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar4) {
+            }
+            /**
+             * 拖动条进度改变的时候调用
+             */
+            @Override
+            public void onProgressChanged(SeekBar seekBar4, int progress,
+                                          boolean fromUser) {
+
+            }
+        });
+
+
+
 
     }
 
