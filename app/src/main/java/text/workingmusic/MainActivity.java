@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -254,6 +256,10 @@ public class MainActivity extends AppCompatActivity
                                                         s2.setVolume(0, 0);
                                                         s3.setVolume(0, 0);
                                                         s4.setVolume(0, 0);
+                                                        s1.setLooping(true);
+                                                        s2.setLooping(true);
+                                                        s3.setLooping(true);
+                                                        s4.setLooping(true);
 
                                                     }
                                                 });
@@ -372,6 +378,12 @@ public class MainActivity extends AppCompatActivity
             view.setVisibility(View.VISIBLE);
 
         }
+        else if(id == R.id.nav_exit)
+        {
+
+                System.exit(0);
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -476,5 +488,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
         view.startAnimation(mHideAnimation);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && playon == true) {
+            moveTaskToBack(false);
+            Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
