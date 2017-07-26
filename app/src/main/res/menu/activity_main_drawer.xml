@@ -15,7 +15,7 @@
     </group>
     <item
         android:id="@+id/nav_exit"
-        android:icon="@mipmap/ic_menu_information"
+        android:icon="@mipmap/ic_menu_exit"
         android:title="退出"/>
 
 </menu>
