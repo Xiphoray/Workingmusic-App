@@ -1,9 +1,11 @@
 package text.workingmusic;
 
 import android.animation.ObjectAnimator;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,13 +20,15 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.SeekBar;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
     final int locationb1[] = new int[2];
     final int locationb2[] = new int[2];
-
+    MediaPlayer s1,s2,s3,s4;
     boolean playon = false;
 
     @Override
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Allstop();
+
                 playon = false;
                 button1.getLocationOnScreen(locationb1);
                 button2.getLocationOnScreen(locationb2);
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Allplay();
                 playon = true;
                 button1.getLocationOnScreen(locationb1);
                 button2.getLocationOnScreen(locationb2);
@@ -120,8 +127,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar1, int progress,
                                           boolean fromUser) {
-                Snackbar.make(seekBar1, "Replace with your own action" + progress, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                s1.setVolume(progress/10.0f, progress/10.0f);
 
             }
         });
@@ -144,6 +150,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar2, int progress,
                                           boolean fromUser) {
+                s2.setVolume(progress/10.0f, progress/10.0f);
 
             }
         });
@@ -166,7 +173,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar3, int progress,
                                           boolean fromUser) {
-
+                s3.setVolume(progress/10.0f, progress/10.0f);
             }
         });
         seekBar4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -188,16 +195,119 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar4, int progress,
                                           boolean fromUser) {
-
+                s4.setVolume(progress/10.0f, progress/10.0f);
             }
         });
 
+        /*
+            播放器设置
+         */
+        s1 = new MediaPlayer();
+        s2 = new MediaPlayer();
+        s3 = new MediaPlayer();
+        s4 = new MediaPlayer();
 
+        try
+        {
+            AssetManager g1 = getAssets();
+            AssetFileDescriptor fire = g1.openFd("1/fire.wav");
+            s1.setDataSource(fire.getFileDescriptor(),fire.getStartOffset(), fire.getLength());
+            s1.prepareAsync();
+            s1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp)
+                {
+                    try
+                    {
+                        AssetManager g1 = getAssets();
+                        AssetFileDescriptor rain = g1.openFd("2/rain.wav");
+                        s2.setDataSource(rain.getFileDescriptor(),rain.getStartOffset(), rain.getLength());
+                        s2.prepareAsync();
+                        s2.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                        {
+                            @Override
+                            public void onPrepared(MediaPlayer mp)
+                            {
+                                try
+                                {
+                                    AssetManager g1 = getAssets();
+                                    AssetFileDescriptor thunder = g1.openFd("3/thunder.wav");
+                                    s3.setDataSource(thunder.getFileDescriptor(),thunder.getStartOffset(), thunder.getLength());
+                                    s3.prepareAsync();
+                                    s3.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                                    {
+                                        @Override
+                                        public void onPrepared(MediaPlayer mp)
+                                        {
+                                            try
+                                            {
+                                                AssetManager g1 = getAssets();
+                                                AssetFileDescriptor people = g1.openFd("4/people.wav");
+                                                s4.setDataSource(people.getFileDescriptor(),people.getStartOffset(), people.getLength());
+                                                s4.prepareAsync();
+                                                s4.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                                                {
+                                                    @Override
+                                                    public void onPrepared(MediaPlayer mp)
+                                                    {
+                                                        s1.setVolume(0, 0);
+                                                        s2.setVolume(0, 0);
+                                                        s3.setVolume(0, 0);
+                                                        s4.setVolume(0, 0);
+
+                                                    }
+                                                });
+                                            }
+                                            catch (IOException e)
+                                            {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                                catch (IOException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+    /*
+        停止播放
+     */
+    public  void Allstop()
+    {
+        s1.pause();
+        s2.pause();
+        s3.pause();
+        s4.pause();
+    }
+
+    /*
+        开始播放
+     */
+    public void Allplay()
+    {
+        s1.start();
+        s2.start();
+        s3.start();
+        s4.start();
 
 
     }
-
-
 
     @Override
     public void onBackPressed() {

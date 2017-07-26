@@ -29,14 +29,14 @@
             android:layout_width="264dp"
             android:layout_height="205dp"
             android:layout_marginBottom="63dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            app:layout_constraintRight_toRightOf="parent">
 
             <TextView
                 android:id="@+id/TextView"
@@ -50,7 +50,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/TextView2"
@@ -62,7 +62,7 @@
                 android:inputType="textPersonName"
                 android:text="V1.0.0"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/TextView3"
@@ -75,7 +75,7 @@
                 android:inputType="textPersonName"
                 android:text="Xiphoray"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
         </LinearLayout>
 
         <ImageView
@@ -94,7 +94,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.23000002"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@mipmap/ic_launcher_round"/>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -127,7 +127,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/seekBar4"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_music_city" />
+            app:srcCompat="@mipmap/ic_music_city"/>
 
         <ImageView
             android:id="@+id/imageView4"
@@ -142,7 +142,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/seekBar3"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_music_thunder" />
+            app:srcCompat="@mipmap/ic_music_thunder"/>
 
         <ImageView
             android:id="@+id/imageView3"
@@ -157,7 +157,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/seekBar1"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_music_fire" />
+            app:srcCompat="@mipmap/ic_music_fire"/>
 
         <ImageView
             android:id="@+id/imageView2"
@@ -172,7 +172,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/seekBar2"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_music_rain" />
+            app:srcCompat="@mipmap/ic_music_rain"/>
 
         <SeekBar
             android:id="@+id/seekBar2"
@@ -189,7 +189,7 @@
             app:layout_constraintHorizontal_bias="0.706"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <SeekBar
             android:id="@+id/seekBar1"
@@ -206,7 +206,7 @@
             app:layout_constraintHorizontal_bias="0.706"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <SeekBar
             android:id="@+id/seekBar3"
@@ -223,7 +223,7 @@
             app:layout_constraintHorizontal_bias="0.706"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <SeekBar
             android:id="@+id/seekBar4"
@@ -240,7 +240,7 @@
             app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
