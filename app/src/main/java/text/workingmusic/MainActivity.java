@@ -1,11 +1,19 @@
 package text.workingmusic;
 
 import android.animation.ObjectAnimator;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,7 +40,9 @@ public class MainActivity extends AppCompatActivity
     final int locationb2[] = new int[2];
     MediaPlayer s1,s2,s3,s4;
     boolean playon = false;
-
+    NotificationManager nm;
+    Notification nf;
+    NotificationCompat.Builder mBuilder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,6 +300,48 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+        /*
+            通知栏设置
+         */
+
+        nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //此Builder为android.support.v4.app.NotificationCompat.Builder中的，下同。
+        mBuilder = new NotificationCompat.Builder(this);
+        //系统收到通知时，通知栏上面显示的文字。
+        mBuilder.setTicker("点击可以返回设置");
+        //显示在通知栏上的小图标
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round,2);
+
+        mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
+        //通知标题
+        mBuilder.setContentTitle("Workingmusic");
+        //通知内容
+        mBuilder.setContentText("点击可以返回设置");
+        //设置大图标，即通知条上左侧的图片（如果只设置了小图标，则此处会显示小图标）
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        //设置点击一次后消失（如果没有点击事件，则该方法无效。）
+        mBuilder.setAutoCancel(true);
+        //设置为不可清除模式
+        mBuilder.setOngoing(true);
+        nf = mBuilder.build();
+        //设置点击返回页面
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(new ComponentName(this, MainActivity.class));//用ComponentName得到class对象
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式，两种情况
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);//将经过设置了的Intent绑定给PendingIntent
+        nf.contentIntent = contentIntent;// 通知绑定 PendingIntent
+        nf.flags= Notification.FLAG_AUTO_CANCEL;//设置自动取消
+        nm=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+
+
+
+
+
     }
     /*
         停止播放
@@ -495,6 +547,7 @@ public class MainActivity extends AppCompatActivity
 
         if (keyCode == KeyEvent.KEYCODE_BACK && playon == true) {
             moveTaskToBack(false);
+            nm.notify(1, nf);
             Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_LONG).show();
             return true;
         }
