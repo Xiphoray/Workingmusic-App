@@ -1,6 +1,8 @@
 # Workingmusic-App
 Workingmusic for android
 
+详情见 [workingmusic](https://github.com/Xiphoray/workingmusic) 这个项目
+
 
  ![image](https://github.com/Xiphoray/Workingmusic-App/blob/master/b.gif)
  
@@ -9,3 +11,24 @@ Workingmusic for android
  
  
  见笑啦~~
+ 
+ 
+ ***
+ 
+ 
+ <Br/>
+ 
+ [V1.0.0版本](https://github.com/Xiphoray/Workingmusic-App/releases/download/V1.0.0/Workingmusic.apk)
+ 
+ 
+ <Br/>
+ 
+ ***
+ 
+ 
+ ### V1.0.0更新
+ 
+ * 功能基本完善的一个白噪声app
+ * 谷歌大法好
+ * 感谢大家捧场噢 ~ 欢迎提issues ~ 当然点star更好啦 ~
+ 
