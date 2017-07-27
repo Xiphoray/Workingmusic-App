@@ -1,7 +1,7 @@
 # Workingmusic-App
 Workingmusic for android
 
-详情见 [workingmusic](https://github.com/Xiphoray/workingmusic) 这个项目
+详情见 [workingmusic for windows](https://github.com/Xiphoray/workingmusic) 这个项目
 
 
  ![image](https://github.com/Xiphoray/Workingmusic-App/blob/master/b.gif)
@@ -18,7 +18,7 @@ Workingmusic for android
  
  <Br/>
  
- [V1.0.0版本](https://github.com/Xiphoray/Workingmusic-App/releases/download/V1.0.0/Workingmusic.apk)
+ [V1.0.2版本](https://github.com/Xiphoray/Workingmusic-App/releases/download/V1.0.2/Workingmusic.apk)
  
  
  <Br/>
