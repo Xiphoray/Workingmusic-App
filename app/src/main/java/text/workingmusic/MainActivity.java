@@ -27,6 +27,7 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity
     NotificationManager nm;
     Notification nf;
     NotificationCompat.Builder mBuilder;
+
+    View button1;
+    View button2;
+//    View No_bs;
+//    View No_bp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +82,10 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        final View button1 = findViewById(R.id.button);
-        final View button2 = findViewById(R.id.button2);
+        button1 = findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
+
+
 
         /*
             关闭按键
@@ -102,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 Allplay();
                 playon = true;
                 button1.getLocationOnScreen(locationb1);
@@ -112,6 +122,8 @@ public class MainActivity extends AppCompatActivity
                 setShowAnimation(view,450);
             }
         });
+
+
 
         /*
             seekbar监听设置
@@ -312,7 +324,7 @@ public class MainActivity extends AppCompatActivity
         //显示在通知栏上的小图标
         mBuilder.setSmallIcon(R.mipmap.ic_launcher_round,2);
 
-        mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
+        mBuilder.setVisibility(Notification.VISIBILITY_SECRET);
         //通知标题
         mBuilder.setContentTitle("Workingmusic");
         //通知内容
@@ -323,6 +335,16 @@ public class MainActivity extends AppCompatActivity
         mBuilder.setAutoCancel(true);
         //设置为不可清除模式
         mBuilder.setOngoing(false);
+
+//        LayoutInflater inflate = LayoutInflater.from(this);
+//        View view1 = inflate.inflate(R.layout.view_custom_button,null);
+        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
+
+//        mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.sing_icon);
+        //API3.0 以上的时候显示按钮，否则消失
+        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, " Workingmusic");
+        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, " 点击返回设置");
+        mBuilder.setContent(mRemoteViews);
         nf = mBuilder.build();
         //设置点击返回页面
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -335,14 +357,47 @@ public class MainActivity extends AppCompatActivity
         nf.contentIntent = contentIntent;// 通知绑定 PendingIntent
         nf.flags= Notification.FLAG_ONGOING_EVENT | Notification. FLAG_AUTO_CANCEL | Notification.FLAG_NO_CLEAR;//设置自动取消
         nm=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-
-
+//        No_bp = mBuilder.getContentView().apply(thi).findViewById(R.id.btn_custom_playstop);
+//        No_bs = nf.contentView.findViewById(R.id.btn_custom_stopleave);
+//
+//        No_bp.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Allstop();
+//
+//
+////                if(playon)
+////                {
+////                    Allstop();
+////                    playon = false;
+////                    button1.getLocationOnScreen(locationb1);
+////                    button2.getLocationOnScreen(locationb2);
+////                    ObjectAnimator.ofFloat(button1, "translationY", 0 , locationb2[1]-locationb1[1]).setDuration(500).start();
+////                    View view;
+////                    view=findViewById(R.id.workingmusicnow);
+////                    setHideAnimation(view,450);
+////                }
+////                else
+////                {
+////                    Allplay();
+////                    playon = true;
+////                    button1.getLocationOnScreen(locationb1);
+////                    button2.getLocationOnScreen(locationb2);
+////                    ObjectAnimator.ofFloat(button2, "translationY", 0 , locationb1[1]-locationb2[1]).setDuration(500).start();
+////                    View view;
+////                    view=findViewById(R.id.workingmusicnow);
+////                    setShowAnimation(view,450);
+////                }
+//
+//            }
+//        });
 
 
 
     }
+
+
     /*
         停止播放
      */
@@ -549,6 +604,7 @@ public class MainActivity extends AppCompatActivity
         if (keyCode == KeyEvent.KEYCODE_BACK && playon == true) {
             moveTaskToBack(false);
             nm.notify(1, nf);
+
             Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_LONG).show();
             return true;
         }
