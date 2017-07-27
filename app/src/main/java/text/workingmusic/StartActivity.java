@@ -1,5 +1,6 @@
 package text.workingmusic;
 
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -101,7 +103,12 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         mContentView = (ImageView) findViewById(R.id.image_startgif);
 
-        Glide.with(this).load(R.drawable.startgif).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(mContentView);
+        Glide.with(this)
+                .load(R.drawable.startgif)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(new GlideDrawableImageViewTarget(mContentView, 1));
+
         Chronometer timer = (Chronometer) findViewById(R.id.timer);
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener()
         {

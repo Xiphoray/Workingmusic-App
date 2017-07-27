@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Allstop();
-
+                nm.cancel(1);
                 playon = false;
                 button1.getLocationOnScreen(locationb1);
                 button2.getLocationOnScreen(locationb2);
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
         //设置点击一次后消失（如果没有点击事件，则该方法无效。）
         mBuilder.setAutoCancel(true);
         //设置为不可清除模式
-        mBuilder.setOngoing(true);
+        mBuilder.setOngoing(false);
         nf = mBuilder.build();
         //设置点击返回页面
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);//将经过设置了的Intent绑定给PendingIntent
         nf.contentIntent = contentIntent;// 通知绑定 PendingIntent
-        nf.flags= Notification.FLAG_AUTO_CANCEL;//设置自动取消
+        nf.flags= Notification.FLAG_ONGOING_EVENT | Notification. FLAG_AUTO_CANCEL | Notification.FLAG_NO_CLEAR;//设置自动取消
         nm=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
 
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(id == R.id.nav_exit)
         {
-
+            nm.cancel(1);
                 System.exit(0);
 
         }
@@ -441,6 +441,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private  AlphaAnimation mHideAnimation= null;
 
@@ -550,6 +551,11 @@ public class MainActivity extends AppCompatActivity
             nm.notify(1, nf);
             Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_LONG).show();
             return true;
+        }
+        else if(keyCode == KeyEvent.KEYCODE_BACK && playon != true)
+        {
+            nm.cancel(1);
+            System.exit(0);
         }
         return super.onKeyDown(keyCode, event);
     }
