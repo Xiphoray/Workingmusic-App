@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
@@ -45,6 +46,11 @@ public class MainActivity extends AppCompatActivity
     Notification nf;
     NotificationCompat.Builder mBuilder;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    int sinit1,sinit2,sinit3,sinit4;
+
+
     View button1;
     View button2;
 //    View No_bs;
@@ -56,6 +62,19 @@ public class MainActivity extends AppCompatActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
+
+
+        sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        sinit1 = sharedPreferences.getInt("s1",0);
+        sinit2 = sharedPreferences.getInt("s2",0);
+        sinit3 = sharedPreferences.getInt("s3",0);
+        sinit4 = sharedPreferences.getInt("s4",0);
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -132,12 +151,19 @@ public class MainActivity extends AppCompatActivity
         SeekBar seekBar2 =(SeekBar)findViewById(R.id.seekBar2);
         SeekBar seekBar3 =(SeekBar)findViewById(R.id.seekBar3);
         SeekBar seekBar4 =(SeekBar)findViewById(R.id.seekBar4);
+        seekBar1.setProgress(sinit1);
+        seekBar2.setProgress(sinit2);
+        seekBar3.setProgress(sinit3);
+        seekBar4.setProgress(sinit4);
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             /**
              * 拖动条停止拖动的时候调用
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar1) {
+                editor.putInt("s1",seekBar1.getProgress());
+                editor.commit();
+
             }
             /**
              * 拖动条开始拖动的时候调用
@@ -161,6 +187,8 @@ public class MainActivity extends AppCompatActivity
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar2) {
+                editor.putInt("s2",seekBar2.getProgress());
+                editor.commit();
             }
             /**
              * 拖动条开始拖动的时候调用
@@ -184,6 +212,8 @@ public class MainActivity extends AppCompatActivity
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar3) {
+                editor.putInt("s3",seekBar3.getProgress());
+                editor.commit();
             }
             /**
              * 拖动条开始拖动的时候调用
@@ -206,6 +236,9 @@ public class MainActivity extends AppCompatActivity
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar4) {
+                editor.putInt("s4",seekBar4.getProgress());
+                editor.commit();
+
             }
             /**
              * 拖动条开始拖动的时候调用
@@ -274,10 +307,10 @@ public class MainActivity extends AppCompatActivity
                                                     @Override
                                                     public void onPrepared(MediaPlayer mp)
                                                     {
-                                                        s1.setVolume(0, 0);
-                                                        s2.setVolume(0, 0);
-                                                        s3.setVolume(0, 0);
-                                                        s4.setVolume(0, 0);
+                                                        s1.setVolume(sinit1/10.0f, sinit1/10.0f);
+                                                        s2.setVolume(sinit2/10.0f, sinit2/10.0f);
+                                                        s3.setVolume(sinit3/10.0f, sinit3/10.0f);
+                                                        s4.setVolume(sinit4/10.0f, sinit4/10.0f);
                                                         s1.setLooping(true);
                                                         s2.setLooping(true);
                                                         s3.setLooping(true);
