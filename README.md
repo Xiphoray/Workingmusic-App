@@ -2,6 +2,18 @@
 Workingmusic for android
 
 详情见 [workingmusic for windows](https://github.com/Xiphoray/workingmusic) 这个项目
+ 
+ ***
+ 
+ 
+ <Br/>
+ 
+ [Workingmusic for android 下载](https://github.com/Xiphoray/Workingmusic-App/releases)
+ 
+ 
+ <Br/>
+ 
+ ***
 
 
  ![image](https://github.com/Xiphoray/Workingmusic-App/blob/master/b.gif)
@@ -15,16 +27,15 @@ Workingmusic for android
  
  ***
  
+  ### 2017.8.1
  
- <Br/>
+ ### V1.1.0更新
  
- [V1.0.2版本](https://github.com/Xiphoray/Workingmusic-App/releases/download/V1.0.2/Workingmusic.apk)
+ * 增加通知栏的控制按钮
+ * 打开程序时保留上一次的设置
  
- 
- <Br/>
- 
- ***
- 
+***
+ ### 2017.7.27
  
  ### V1.0.0更新
  
