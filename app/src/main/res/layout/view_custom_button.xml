@@ -21,7 +21,7 @@
         android:layout_marginLeft="5dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ImageButton
             android:id="@+id/btn_custom_playstop"
@@ -30,7 +30,7 @@
             android:layout_height="40dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_notification_start"/>
+            android:src="@mipmap/ic_notification_pause"/>
 
         <ImageButton
             android:id="@+id/btn_custom_stopleave"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="title"
+            android:text="Workingmusic"
             android:textAlignment="center"
             android:textColor="@android:color/background_dark"
             android:textSize="17sp"/>
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:text="content"
+            android:text="点击返回设置"
             android:textAlignment="viewStart"
             android:textColor="@color/black_overlay"
             android:textSize="12sp"/>

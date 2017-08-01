@@ -4,9 +4,11 @@ import android.animation.ObjectAnimator;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -42,9 +44,12 @@ public class MainActivity extends AppCompatActivity
     final int locationb2[] = new int[2];
     MediaPlayer s1,s2,s3,s4;
     boolean playon = false;
+    RemoteViews mRemoteViews;
     NotificationManager nm;
     Notification nf;
     NotificationCompat.Builder mBuilder;
+    /** 通知栏按钮广播 */
+    public NotificationBroadcastReceiver bReceiver;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -53,8 +58,7 @@ public class MainActivity extends AppCompatActivity
 
     View button1;
     View button2;
-//    View No_bs;
-//    View No_bp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +117,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Allstop();
-                nm.cancel(1);
+                nm.cancel(1417);
                 playon = false;
+                mRemoteViews.setImageViewResource(R.id.btn_custom_playstop,R.mipmap.ic_notification_start);
+                refleshnotifi();
                 button1.getLocationOnScreen(locationb1);
                 button2.getLocationOnScreen(locationb2);
                 ObjectAnimator.ofFloat(button1, "translationY", 0 , locationb2[1]-locationb1[1]).setDuration(500).start();
@@ -133,6 +139,8 @@ public class MainActivity extends AppCompatActivity
 
                 Allplay();
                 playon = true;
+                mRemoteViews.setImageViewResource(R.id.btn_custom_playstop,R.mipmap.ic_notification_pause);
+                refleshnotifi();
                 button1.getLocationOnScreen(locationb1);
                 button2.getLocationOnScreen(locationb2);
                 ObjectAnimator.ofFloat(button2, "translationY", 0 , locationb1[1]-locationb2[1]).setDuration(500).start();
@@ -369,14 +377,18 @@ public class MainActivity extends AppCompatActivity
         //设置为不可清除模式
         mBuilder.setOngoing(false);
 
-//        LayoutInflater inflate = LayoutInflater.from(this);
-//        View view1 = inflate.inflate(R.layout.view_custom_button,null);
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
 
-//        mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.sing_icon);
-        //API3.0 以上的时候显示按钮，否则消失
-        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, " Workingmusic");
-        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, " 点击返回设置");
+        mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
+
+
+        Intent intent_btn = new Intent("text.notifications.intent.action.ButtonClick");
+        intent_btn.putExtra("notificationbtn", 1);
+        PendingIntent intentp = PendingIntent.getBroadcast(this, 1, intent_btn, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_playstop, intentp);
+        intent_btn.putExtra("notificationbtn", 2);
+        PendingIntent intents = PendingIntent.getBroadcast(this, 2, intent_btn, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_stopleave, intents);
+
         mBuilder.setContent(mRemoteViews);
         nf = mBuilder.build();
         //设置点击返回页面
@@ -390,42 +402,7 @@ public class MainActivity extends AppCompatActivity
         nf.contentIntent = contentIntent;// 通知绑定 PendingIntent
         nf.flags= Notification.FLAG_ONGOING_EVENT | Notification. FLAG_AUTO_CANCEL | Notification.FLAG_NO_CLEAR;//设置自动取消
         nm=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        No_bp = mBuilder.getContentView().apply(thi).findViewById(R.id.btn_custom_playstop);
-//        No_bs = nf.contentView.findViewById(R.id.btn_custom_stopleave);
-//
-//        No_bp.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Allstop();
-//
-//
-////                if(playon)
-////                {
-////                    Allstop();
-////                    playon = false;
-////                    button1.getLocationOnScreen(locationb1);
-////                    button2.getLocationOnScreen(locationb2);
-////                    ObjectAnimator.ofFloat(button1, "translationY", 0 , locationb2[1]-locationb1[1]).setDuration(500).start();
-////                    View view;
-////                    view=findViewById(R.id.workingmusicnow);
-////                    setHideAnimation(view,450);
-////                }
-////                else
-////                {
-////                    Allplay();
-////                    playon = true;
-////                    button1.getLocationOnScreen(locationb1);
-////                    button2.getLocationOnScreen(locationb2);
-////                    ObjectAnimator.ofFloat(button2, "translationY", 0 , locationb1[1]-locationb2[1]).setDuration(500).start();
-////                    View view;
-////                    view=findViewById(R.id.workingmusicnow);
-////                    setShowAnimation(view,450);
-////                }
-//
-//            }
-//        });
-
+        initButtonReceiver();
 
 
     }
@@ -477,7 +454,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
@@ -494,7 +471,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         View view;
         if (id == R.id.nav_workingmusic) {
-            if(playon == true)
+            if(playon)
             {
                 view=findViewById(R.id.workingmusicnow);
                 view.setVisibility(View.VISIBLE);
@@ -520,7 +497,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(id == R.id.nav_exit)
         {
-            nm.cancel(1);
+            nm.cancel(1417);
                 System.exit(0);
 
         }
@@ -572,8 +549,6 @@ public class MainActivity extends AppCompatActivity
 
                 View button1=findViewById(R.id.button);
                 View button2=findViewById(R.id.button2);
-//                button1.getLocationOnScreen(locationb1);
-//                button2.getLocationOnScreen(locationb2);
                 ObjectAnimator.ofFloat(button2, "translationY", 0 , 0).setDuration(500).start();
                 button2.setVisibility(View.INVISIBLE);
                 button1.setVisibility(View.VISIBLE);
@@ -621,8 +596,6 @@ public class MainActivity extends AppCompatActivity
                 view.setVisibility(View.INVISIBLE);
                 View button1=findViewById(R.id.button);
                 View button2=findViewById(R.id.button2);
-//                button1.getLocationOnScreen(locationb1);
-//                button2.getLocationOnScreen(locationb2);
                 ObjectAnimator.ofFloat(button1, "translationY", 0 , 0).setDuration(500).start();
                 button1.setVisibility(View.INVISIBLE);
                 button2.setVisibility(View.VISIBLE);
@@ -636,16 +609,98 @@ public class MainActivity extends AppCompatActivity
 
         if (keyCode == KeyEvent.KEYCODE_BACK && playon == true) {
             moveTaskToBack(false);
-            nm.notify(1, nf);
+            nm.notify(1417, nf);
 
-            Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "你把我放在后台啦~", Toast.LENGTH_SHORT).show();
             return true;
         }
         else if(keyCode == KeyEvent.KEYCODE_BACK && playon != true)
         {
-            nm.cancel(1);
+            nm.cancel(1417);
             System.exit(0);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void refleshnotifi()
+    {
+        mBuilder.setContent(mRemoteViews);
+        nf = mBuilder.build();
+        //设置点击返回页面
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(new ComponentName(this, MainActivity.class));//用ComponentName得到class对象
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式，两种情况
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);//将经过设置了的Intent绑定给PendingIntent
+        nf.contentIntent = contentIntent;// 通知绑定 PendingIntent
+        nf.flags= Notification.FLAG_ONGOING_EVENT | Notification. FLAG_AUTO_CANCEL | Notification.FLAG_NO_CLEAR;//设置自动取消
+        nm=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+    }
+
+    /** 带按钮的通知栏点击广播接收 */
+    public void initButtonReceiver(){
+        bReceiver = new NotificationBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("text.notifications.intent.action.ButtonClick");
+        registerReceiver(bReceiver, intentFilter);
+    }
+
+    class NotificationBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            String action = intent.getAction();
+            if (action.equals("text.notifications.intent.action.ButtonClick"))
+            {
+                View v = View.inflate(MainActivity.this, R.layout.view_custom_button, null);
+                int btn_id = intent.getIntExtra("notificationbtn", 0);
+                switch (btn_id)
+                {
+                    case 1:
+                        if(playon)
+                        {
+                            Allstop();
+                            playon = false;
+
+
+                            mRemoteViews.setImageViewResource(R.id.btn_custom_playstop,R.mipmap.ic_notification_start);
+                            refleshnotifi();
+                            nm.notify(1417, nf);
+                            button1.setVisibility(View.INVISIBLE);
+                            button2.setVisibility(View.VISIBLE);
+                            View view;
+                            view=findViewById(R.id.workingmusicnow);
+                            setHideAnimation(view,1);
+
+
+                        }
+                        else
+                        {
+                            Allplay();
+                            playon = true;
+
+
+                            mRemoteViews.setImageViewResource(R.id.btn_custom_playstop,R.mipmap.ic_notification_pause);
+                            refleshnotifi();
+                            nm.notify(1417, nf);
+                            button1.setVisibility(View.VISIBLE);
+                            button2.setVisibility(View.INVISIBLE);
+                            View view;
+                            view=findViewById(R.id.workingmusicnow);
+                            setShowAnimation(view,1);
+
+                        }
+                        break;
+                    case 2:
+                        nm.cancel(1417);
+                        System.exit(0);
+                        break;
+                }
+            }
+        }
     }
 }
